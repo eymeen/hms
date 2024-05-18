@@ -1,9 +1,9 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <vector>
-#include <memory>
 #include <iostream>
+#include <memory>
+#include <vector>
 #include "Person.h"
 #include "Appointment.h"
 
@@ -15,10 +15,11 @@ private:
 public:
     void addPerson(std::shared_ptr<Person> person);
     void addAppointment(std::shared_ptr<Appointment> appointment);
-    std::shared_ptr<Person> findPersonById(int id) const;
-    std::vector<std::shared_ptr<Appointment>> getAppointmentsByPersonId(int id) const;
     void displayAllPersons() const;
     void displayAllAppointments() const;
+    std::shared_ptr<Person> findPersonById(int id) const;
+    std::vector<std::shared_ptr<Appointment>> getAppointmentsByPersonId(int id) const;
+    std::vector<std::shared_ptr<Person>> getAllPersons() const;  // Add this line
 };
 
 #endif // DATABASE_H
