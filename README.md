@@ -1,5 +1,12 @@
-# Hospital Management System
+<div align="center"> 
+    
+# Mr. Abdulhafez, Please <a href="/REPORT.md">read this report</a>
 
+</div>
+<br><br><br>
+
+
+# Hospital Management System
 The Hospital Management System is a comprehensive software solution designed to efficiently manage healthcare professionals, patient treatments, appointments, and emergency responses within a hospital or healthcare facility.
 
 ## Features
