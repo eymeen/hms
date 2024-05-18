@@ -5,56 +5,60 @@
 </div>
 <br><br><br>
 
-
 # Hospital Management System
-The Hospital Management System is a comprehensive software solution designed to efficiently manage healthcare professionals, patient treatments, appointments, and emergency responses within a hospital or healthcare facility.
+
+This is a simple console-based Hospital Management System written in C++ using Object-Oriented Programming concepts such as inheritance, polymorphism, abstract classes, and virtual functions. The system includes functionalities for login, dashboard, patient registration, emergency triage, and billing.
 
 ## Features
 
-- **Healthcare Professional Management**: Create, update, and manage profiles for doctors, nurses, and specialists with unique specialties and schedules.
-- **Patient Treatment Management**: Record and manage patient medical histories, treatment plans, and ongoing care requirements.
-- **Appointment Scheduling**: Schedule appointments and consultations with healthcare professionals for diagnosis, treatment, and follow-up.
-- **Emergency Response**: Detect and respond to emergency situations promptly, coordinating medical staff and emergency response teams.
+- Login Screen
+- Doctor Dashboard
+- Patient Registration
+- Emergency Triage (Nurse)
+- Billing and Insurance
 
-## Usage
+## How to Run
 
-1. **Compilation**: Compile the program using a C++ compiler. For example:
+### Prerequisites
 
-    ```bash
-    g++ -o main main.cpp src/*.cpp -I include/
-    ```
+- A C++ compiler (e.g., g++, clang++)
+- C++11 or later
 
-2. **Execution**: Run the compiled executable:
+### Compilation and Execution
 
-    ```bash
-    ./main
-    ```
+1. Clone the repository or download the source code.
+2. Open a terminal and navigate to the directory containing the source files.
+3. Compile the source files using the following command:
 
-3. **Main Menu**: Upon running the program, you will be presented with a main menu where you can navigate through different functionalities of the Hospital Management System.
+```sh
+g++ -std=c++11 -o hospital main.cpp Database.cpp Appointment.cpp Person.cpp HealthcareProfessional.cpp Doctor.cpp Nurse.cpp Specialist.cpp Patient.cpp
+```
 
-4. **User Authentication**: Log in using your username and password to access the system. Different user roles may have different permissions and functionalities available.
+4. Run the compiled executable:
 
-5. **Dashboard**: Once logged in, you will be directed to the dashboard specific to your role (e.g., doctor, nurse, administrator). Here, you can view your schedule, manage patient records, schedule appointments, or respond to emergencies.
+```sh
+./hospital
+```
 
-6. **Functionality Overview**:
+### Example Login Credentials
 
-    - **Manage Healthcare Professionals**: Administrators can add, update, and manage profiles for doctors, nurses, and specialists.
-    - **Patient Registration**: Receptionists or administrative staff can register new patients by entering their personal and medical information.
-    - **Appointment Scheduling**: Schedule appointments for patients with healthcare professionals based on availability.
-    - **Patient Treatment Management**: Doctors, nurses, and specialists can record and manage patient medical histories, treatment plans, and ongoing care requirements.
-    - **Emergency Response**: Medical staff can respond to emergency situations promptly, coordinating with emergency response teams and providing rapid and effective care.
+- Doctor:
+  - Username: `doctor`
+  - Password: `password`
+- Nurse:
+  - Username: `nurse`
+  - Password: `password`
 
-7. **Exiting the Program**: To exit the program, simply log out from the main menu.
+## Code Documentation
 
-## Requirements
+The code consists of the following main classes:
 
-- C++ compiler (e.g., g++)
-- Standard Template Library (STL)
+1. `Person` - An abstract base class representing a person.
+2. `Patient` - A derived class representing a patient.
+3. `HealthcareProfessional` - An abstract class derived from `Person`, representing healthcare professionals.
+4. `Doctor` - A class derived from `HealthcareProfessional`, representing a doctor.
+5. `Nurse` - A class derived from `HealthcareProfessional`, representing a nurse.
+6. `Specialist` - A class derived from `Doctor`, representing a specialist.
+7. `Appointment` - A class representing an appointment.
+8. `Database` - A class responsible for managing all data, including persons and appointments.
 
-## Contributing
-
-Contributions to the Hospital Management System project are welcome! If you encounter any issues, have feature requests, or would like to contribute code, please feel free to open an issue or submit a pull request on GitHub.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
