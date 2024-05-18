@@ -136,27 +136,15 @@ The Use Case Diagram illustrates the interactions and functionalities available 
 - **Patient Treatment Management**: Doctors, nurses, and specialists can manage patient treatments, including diagnosis, prescriptions, procedures, and follow-ups.
 - **Emergency Response**: Medical staff can respond to emergency situations, initiate emergency procedures, and coordinate rapid response teams.
 
-```
-@startuml
-left to right direction
-skinparam packageStyle rectangle
-actor Administrator
-actor "Receptionist/Booking Agent" as Receptionist
-actor "Medical Staff" as MedicalStaff
-actor "Emergency Response Team" as EmergencyResponseTeam
-rectangle "Hospital Management System" {
-    usecase "Manage Healthcare Professionals" as ManageHealthcareProfessionals
-    usecase "Schedule Appointments" as ScheduleAppointments
-    usecase "Patient Treatment Management" as PatientTreatmentManagement
-    usecase "Emergency Response" as EmergencyResponse
-
-    Administrator --> ManageHealthcareProfessionals
-    Receptionist --> ScheduleAppointments
-    MedicalStaff --> PatientTreatmentManagement
-    MedicalStaff --> EmergencyResponse
-    EmergencyResponseTeam --> EmergencyResponse
-}
-@enduml
+```mermaid
+graph TD
+    subgraph "Hospital Management System"
+        ManageHealthcareProfessionals --> Administrator
+        ScheduleAppointments --> Receptionist
+        PatientTreatmentManagement --> MedicalStaff
+        EmergencyResponse --> MedicalStaff
+        EmergencyResponse --> EmergencyResponseTeam
+    end
 ```
 
 ### **Class Diagram**
@@ -171,53 +159,46 @@ The Class Diagram depicts the structure and relationships between key classes in
 - **Appointment Class**: Represents a scheduled appointment with attributes such as date, time, patient, and healthcare professional.
 - **Patient Class**: Represents a patient with attributes such as ID, name, medical history, and current treatment plan.
 
-```
-@startuml
-class Person {
-    - id: int
-    - name: string
-    - contactInfo: string
-    - role: string
-}
+```mermaid
+classDiagram
+    class Person {
+        - id: int
+        - name: string
+        - contactInfo: string
+        - role: string
+    }
+    class HealthcareProfessional {
+        - specialty: string
+        - schedule: Schedule
+    }
+    class Doctor {
+        - licenseNumber: string
+        - expertise: string
+    }
+    class Nurse {
+        - certification: string
+        - shiftSchedule: Schedule
+    }
+    class Specialist {
+        - subSpecialty: string
+        - availability: Schedule
+    }
+    class Appointment {
+        - dateTime: DateTime
+        - patient: Patient
+        - healthcareProfessional: HealthcareProfessional
+    }
+    class Patient {
+        - medicalHistory: string
+        - treatmentPlan: string
+    }
+    Person <|-- HealthcareProfessional
+    HealthcareProfessional <|-- Doctor
+    HealthcareProfessional <|-- Nurse
+    HealthcareProfessional <|-- Specialist
+    Person "1" o-- "many" Appointment
+    Person "1" o-- "many" Patient
 
-class HealthcareProfessional {
-    - specialty: string
-    - schedule: Schedule
-}
-
-class Doctor {
-    - licenseNumber: string
-    - expertise: string
-}
-
-class Nurse {
-    - certification: string
-    - shiftSchedule: Schedule
-}
-
-class Specialist {
-    - subSpecialty: string
-    - availability: Schedule
-}
-
-class Appointment {
-    - dateTime: DateTime
-    - patient: Patient
-    - healthcareProfessional: HealthcareProfessional
-}
-
-class Patient {
-    - medicalHistory: string
-    - treatmentPlan: string
-}
-
-Person <|-- HealthcareProfessional
-HealthcareProfessional <|-- Doctor
-HealthcareProfessional <|-- Nurse
-HealthcareProfessional <|-- Specialist
-Person "1" o-- "many" Appointment
-Person "1" o-- "many" Patient
-@enduml
 ```
 ### Class Descriptions
 
@@ -272,22 +253,16 @@ The State Machine Diagram outlines the states and transitions involved in managi
 - **Treatment State**: Involves administering treatments, medications, and procedures as per the treatment plan.
 - **Follow-Up State**: Represents follow-up appointments and evaluations to monitor the patient's progress and adjust the treatment plan if necessary.
 
-```
-@startuml
-[*] --> NewPatient
+```mermaid
+stateDiagram
+    [*] --> NewPatient
+    state NewPatient {
+        [*] --> Diagnosis
+        Diagnosis --> Treatment
+        Treatment --> FollowUp
+        FollowUp --> Diagnosis
+    }
 
-state NewPatient {
-    state Diagnosis
-    state Treatment
-    state FollowUp
-}
-
-NewPatient --> Diagnosis : Patient Registered
-Diagnosis --> Treatment : Diagnosis Confirmed
-Treatment --> FollowUp : Treatment Administered
-FollowUp --> Diagnosis : Follow-Up Required
-
-@enduml
 
 ```
 
@@ -301,23 +276,18 @@ The Activity Diagram illustrates the step-by-step process involved in emergency 
 - **Coordinate Teams**: Various medical teams collaborate, including doctors, nurses, specialists, and emergency medical technicians (EMTs), to provide rapid and effective care.
 - **Post-Emergency Care**: After stabilizing the patient, the system facilitates post-emergency care, including transfers to intensive care units (ICUs) or operating rooms for further treatment.
 
-```
-@startuml
-start
-:Emergency Trigger;
-if (Emergency Alert) then (yes)
-  :Alert Medical Staff;
-  :Alert Emergency Response Teams;
-  if (Dynamic Response) then (yes)
-    :Assess Situation;
-    :Initiate Emergency Procedures;
-    :Coordinate Teams;
-    :Provide On-site Care;
-  endif
-  :Post-Emergency Care;
-endif
-stop
-@enduml
+```mermaid
+graph TD
+    start --> EmergencyTrigger
+    EmergencyTrigger -->|yes| AlertMedicalStaff
+    EmergencyTrigger -->|yes| AlertEmergencyResponseTeams
+    AlertMedicalStaff --> DynamicResponse
+    DynamicResponse -->|yes| PostEmergencyCare
+    PostEmergencyCare --> stop
+    AlertEmergencyResponseTeams --> DynamicResponse
+    DynamicResponse -->|yes| PostEmergencyCare
+    PostEmergencyCare --> stop
+
 ```
 
 ### **Communication Diagram (Emergency Response)**
@@ -329,21 +299,21 @@ The Communication Diagram illustrates the communication flow between medical sta
 - **Emergency Response Teams**: EMTs, paramedics, and specialized emergency teams coordinate with medical staff, provide on-site care, and prepare for transport if necessary.
 - **System Components**: The system facilitates communication, tracks emergency responses, and provides real-time updates on patient status and care interventions.
 
-```
-@startuml
-participant "System" as System
-participant "Medical Staff" as MedicalStaff
-participant "Emergency Response Teams" as EmergencyResponseTeams
+```mermaid
+sequenceDiagram
+    participant System
+    participant MedicalStaff
+    participant EmergencyResponseTeams
 
-System -> MedicalStaff : Emergency Trigger
-MedicalStaff -> System : Acknowledge
-System -> EmergencyResponseTeams : Emergency Alert
-EmergencyResponseTeams -> System : Acknowledge
-System -> MedicalStaff : Dynamic Response
-MedicalStaff -> System : Acknowledge
-System -> EmergencyResponseTeams : Dynamic Response
-EmergencyResponseTeams -> System : Acknowledge
-@enduml
+    System->>MedicalStaff: Emergency Trigger
+    MedicalStaff-->>System: Acknowledge
+    System->>EmergencyResponseTeams: Emergency Alert
+    EmergencyResponseTeams-->>System: Acknowledge
+    System->>MedicalStaff: Dynamic Response
+    MedicalStaff-->>System: Acknowledge
+    System->>EmergencyResponseTeams: Dynamic Response
+    EmergencyResponseTeams-->>System: Acknowledge
+
 ```
 
 ### **Sequence Diagram (Treatment Management)**
@@ -355,22 +325,22 @@ The Sequence Diagram demonstrates the sequence of interactions between a doctor,
 - **Specialist Consultation**: If required, the doctor consults with a specialist for additional expertise or opinions on the treatment plan.
 - **Follow-Up Appointments**: The patient attends follow-up appointments for evaluations, adjustments to the treatment plan, and ongoing care.
 
-```
-@startuml
-participant Doctor
-participant Nurse
-participant Specialist
-participant Patient
+```mermaid
+sequenceDiagram
+    participant Doctor
+    participant Nurse
+    participant Specialist
+    participant Patient
 
-Doctor -> Patient : Consultation
-Patient --> Doctor : Medical History
-Doctor -> Doctor : Diagnosis
-Doctor -> Patient : Treatment Plan
-Patient -> Nurse : Treatment Administration
-Nurse -> Doctor : Treatment Updates
-Doctor -> Specialist : Consultation
-Specialist --> Doctor : Expert Opinion
-@enduml
+    Doctor->>Patient: Consultation
+    Patient-->>Doctor: Medical History
+    Doctor->>Doctor: Diagnosis
+    Doctor->>Patient: Treatment Plan
+    Patient->>Nurse: Treatment Administration
+    Nurse->>Doctor: Treatment Updates
+    Doctor->>Specialist: Consultation
+    Specialist-->>Doctor: Expert Opinion
+
 
 ```
 
